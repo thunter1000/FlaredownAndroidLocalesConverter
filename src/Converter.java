@@ -79,7 +79,8 @@ public class Converter {
             String vString = (String) value;
             vString = vString.replace("<", "&lt;"); // Format a string for android strings.
             vString = vString.replace(">", "&gt;"); // Format a string for android strings.
-            vString = vString.replace("&", "&amp;"); // Format a string for android strings
+            vString = vString.replace("&", "&amp;"); // Format a string for android strings.
+            vString = vString.replace("'", "\\'"); // Format a string for android strings.
             returnS += "\t<string name=\"" + preVariable + key + "\">" + vString + "</string>\n";
             //System.out.println(append);
         }
