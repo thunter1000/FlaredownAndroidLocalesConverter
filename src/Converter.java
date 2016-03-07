@@ -62,9 +62,9 @@ public class Converter {
 
     private static void analyseObject(Object value, String preVariable, String key) {
         if(value instanceof JSONObject) {
-            extractJson((JSONObject) value, preVariable + key + ".", "");
+            extractJson((JSONObject) value, preVariable + key + "_", "");
         } else if(value instanceof JSONArray) {
-            extractJson((JSONArray) value, preVariable + key + ".", "");
+            extractJson((JSONArray) value, preVariable + key + "_", "");
         } else if(value instanceof String) {
             String vString = (String) value;
             String append = "<string name=\"" + preVariable + key + "\">" + vString + "</string>";
