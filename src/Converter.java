@@ -76,6 +76,8 @@ public class Converter {
             returnS = extractJson((JSONArray) value, preVariable + key + "_", returnS);
         } else if(value instanceof String) {
             String vString = (String) value;
+            vString = vString.replace("<", "&lt;"); // Format a string for android strings.
+            vString = vString.replace(">", "&gt;"); // Format a string for android strings.
             returnS += "<string name=\"" + preVariable + key + "\">" + vString + "</string>\n";
             //System.out.println(append);
         }
