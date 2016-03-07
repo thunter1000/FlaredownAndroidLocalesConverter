@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -28,6 +29,14 @@ public class Converter {
 
         } while(!input.equals("---"));
 
+        try {
+            // Clear the console
+            if (System.getProperty("os.name").startsWith("Window"))
+                Runtime.getRuntime().exec("cls");
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException e ) {}
+
         JSONParser jsonParser = new JSONParser();
 
 
@@ -35,7 +44,7 @@ public class Converter {
             Object obj = jsonParser.parse(JSONString);
             JSONObject jObject = (JSONObject) obj;
 
-            extractJson(jObject, "",  "");
+            System.out.println(extractJson(jObject, "",  ""));
         } catch (ParseException e) {
             System.out.println("position: " + e.getPosition());
             System.out.println(e);
@@ -46,29 +55,30 @@ public class Converter {
         for(Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
             String key = (String) iterator.next();
             Object value = jsonObject.get(key);
-            analyseObject(value, preVariable, key);
+            returnS = analyseObject(value, preVariable, key, returnS);
         }
-        return "";
+        return returnS;
     }
 
     private static String extractJson(JSONArray jsonArray, String preVariable, String returnS) {
         for(int i = 0; i < jsonArray.size(); i++) {
             Object value = jsonArray.get(i);
-            analyseObject(value, preVariable, i + "");
+            returnS = analyseObject(value, preVariable, i + "", returnS);
         }
 
-        return "";
+        return returnS;
     }
 
-    private static void analyseObject(Object value, String preVariable, String key) {
+    private static String analyseObject(Object value, String preVariable, String key, String returnS) {
         if(value instanceof JSONObject) {
-            extractJson((JSONObject) value, preVariable + key + "_", "");
+            returnS = extractJson((JSONObject) value, preVariable + key + "_", returnS);
         } else if(value instanceof JSONArray) {
-            extractJson((JSONArray) value, preVariable + key + "_", "");
+            returnS = extractJson((JSONArray) value, preVariable + key + "_", returnS);
         } else if(value instanceof String) {
             String vString = (String) value;
-            String append = "<string name=\"" + preVariable + key + "\">" + vString + "</string>";
-            System.out.println(append);
+            returnS += "<string name=\"" + preVariable + key + "\">" + vString + "</string>\n";
+            //System.out.println(append);
         }
+        return returnS;
     }
 }
