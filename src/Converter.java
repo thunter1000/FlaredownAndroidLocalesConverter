@@ -70,6 +70,7 @@ public class Converter {
     }
 
     private static String analyseObject(Object value, String preVariable, String key, String returnS) {
+        key = key.replace("\"", "");
         if(value instanceof JSONObject) {
             returnS = extractJson((JSONObject) value, preVariable + key + "_", returnS);
         } else if(value instanceof JSONArray) {
@@ -78,7 +79,8 @@ public class Converter {
             String vString = (String) value;
             vString = vString.replace("<", "&lt;"); // Format a string for android strings.
             vString = vString.replace(">", "&gt;"); // Format a string for android strings.
-            returnS += "<string name=\"" + preVariable + key + "\">" + vString + "</string>\n";
+            vString = vString.replace("&", "&amp;"); // Format a string for android strings
+            returnS += "\t<string name=\"" + preVariable + key + "\">" + vString + "</string>\n";
             //System.out.println(append);
         }
         return returnS;
